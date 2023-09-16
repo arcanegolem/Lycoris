@@ -1,3 +1,3 @@
 # ComposePDF
 
-Simple compose library for reading PDF
+Need guide here
