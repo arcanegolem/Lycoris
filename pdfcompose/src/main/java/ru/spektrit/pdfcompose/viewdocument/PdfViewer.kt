@@ -388,18 +388,21 @@ fun PdfViewer(
    val rendererScope = rememberCoroutineScope()
    val mutex = remember { Mutex() }
 
-   // TODO: Прикрутить отображение загрузки документа
    var docLoadPercentage by remember { mutableStateOf( 0 ) }
    var docLoad = 0
    val bufferSize = 8192
 
    val context = LocalContext.current
 
+
+   // TODO: Возможно стоит убрать постоянное кэширование при загрузке
+   // TODO: Сделать файлы временными как в случае с @RawRes (???)
    val renderer by produceState<PdfRenderer?>(null, null) {
       rendererScope.launch(Dispatchers.IO) {
          val file = File(context.cacheDir, provideFileName())
          val response = provideDownloadInterface(headers).downloadFile(url)
          val responseByteStream = response.byteStream()
+         context.filesDir
 
          responseByteStream.use { inputStream ->
             file.outputStream().use { outputStream ->
