@@ -156,15 +156,11 @@ fun PdfViewer(
                                  page.render(destinationBitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
                               }
                            }
-                        } catch (e: Exception) {
-                           return@launch
-                        }
+                        } catch (e: Exception) { return@launch }
                      }
                      bitmap = destinationBitmap
                   }
-                  onDispose {
-                     job.cancel()
-                  }
+                  onDispose { job.cancel() }
                }
                Box(modifier = Modifier
                   .background(Color.White)
@@ -205,28 +201,19 @@ fun PdfViewer(
                   )
 
                   if (isEnlargedDialogDisplayed) {
-                     ImageDialog(img = request) {
-                        isEnlargedDialogDisplayed = false
-                     }
+                     ImageDialog(img = request) { isEnlargedDialogDisplayed = false }
                   }
                }
             }
 
-            if (index != pageCount - 1) {
-               Spacer(modifier = Modifier
-                  .fillMaxWidth()
-                  .height(15.dp))
-            }
+            if (index != pageCount - 1) { Spacer(modifier = Modifier.fillMaxWidth().height(15.dp)) }
          }
       }
 
-      Box(modifier = Modifier
-         .align(Alignment.TopEnd)
-         .padding(10.dp)
-         .zIndex(1f)
-      ) {
-         Text(text = "${currentPage + 1}/$pageCount")
-      }
+      Text(
+         modifier = Modifier.align(Alignment.TopEnd).padding(10.dp).zIndex(1f),
+         text = "${currentPage + 1}/$pageCount"
+      )
    }
 }
 
@@ -256,9 +243,7 @@ fun PdfViewer(
       awaitDispose {
          val currentRenderer = value
          rendererScope.launch(Dispatchers.IO) {
-            mutex.withLock {
-               currentRenderer?.close()
-            }
+            mutex.withLock { currentRenderer?.close() }
          }
       }
    }
@@ -324,15 +309,11 @@ fun PdfViewer(
                                  page.render(destinationBitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
                               }
                            }
-                        } catch (e: Exception) {
-                           return@launch
-                        }
+                        } catch (e: Exception) { return@launch }
                      }
                      bitmap = destinationBitmap
                   }
-                  onDispose {
-                     job.cancel()
-                  }
+                  onDispose { job.cancel() }
                }
                Box(modifier = Modifier
                   .background(Color.White)
@@ -373,28 +354,19 @@ fun PdfViewer(
                   )
 
                   if (isEnlargedDialogDisplayed) {
-                     ImageDialog(img = request) {
-                        isEnlargedDialogDisplayed = false
-                     }
+                     ImageDialog(img = request) { isEnlargedDialogDisplayed = false }
                   }
                }
             }
 
-            if (index != pageCount - 1) {
-               Spacer(modifier = Modifier
-                  .fillMaxWidth()
-                  .height(15.dp))
-            }
+            if (index != pageCount - 1) { Spacer(modifier = Modifier.fillMaxWidth().height(15.dp)) }
          }
       }
 
-      Box(modifier = Modifier
-         .align(Alignment.TopEnd)
-         .padding(10.dp)
-         .zIndex(1f)
-      ) {
-         Text(text = "${currentPage + 1}/$pageCount")
-      }
+      Text(
+         modifier = Modifier.align(Alignment.TopEnd).padding(10.dp).zIndex(1f),
+         text = "${currentPage + 1}/$pageCount"
+      )
    }
 }
 
@@ -450,11 +422,7 @@ fun PdfViewer(
       }
       awaitDispose {
          val currentRenderer = value
-         rendererScope.launch(Dispatchers.IO) {
-            mutex.withLock {
-               currentRenderer?.close()
-            }
-         }
+         rendererScope.launch(Dispatchers.IO) { mutex.withLock { currentRenderer?.close() } }
       }
    }
    val imageLoader = context.imageLoader
@@ -530,15 +498,11 @@ fun PdfViewer(
                                  page.render(destinationBitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
                               }
                            }
-                        } catch (e: Exception) {
-                           return@launch
-                        }
+                        } catch (e: Exception) { return@launch }
                      }
                      bitmap = destinationBitmap
                   }
-                  onDispose {
-                     job.cancel()
-                  }
+                  onDispose { job.cancel() }
                }
                Box(modifier = Modifier
                   .background(Color.White)
@@ -579,27 +543,18 @@ fun PdfViewer(
                   )
 
                   if (isEnlargedDialogDisplayed) {
-                     ImageDialog(img = request) {
-                        isEnlargedDialogDisplayed = false
-                     }
+                     ImageDialog(img = request) { isEnlargedDialogDisplayed = false }
                   }
                }
             }
 
-            if (index != pageCount - 1) {
-               Spacer(modifier = Modifier
-                  .fillMaxWidth()
-                  .height(15.dp))
-            }
+            if (index != pageCount - 1) { Spacer(modifier = Modifier.fillMaxWidth().height(15.dp)) }
          }
       }
 
       if (pageCount > 0) {
          Text(
-            modifier = Modifier
-               .align(Alignment.TopEnd)
-               .padding(10.dp)
-               .zIndex(1f),
+            modifier = Modifier.align(Alignment.TopEnd).padding(10.dp).zIndex(1f),
             text = "${currentPage + 1}/$pageCount"
          )
       }
