@@ -405,6 +405,24 @@ fun PdfViewer(
    }
 }
 
+/**
+ * PDF document viewer from URL
+ *
+ * [modifier] - [Modifier] interface for the whole composable, by default fills max size available
+ * [url] - URL to PDF document
+ * [documentDescription] - Similar to content description but cannot be null in this case
+ * [verticalArrangement] - Page arrangement
+ */
+@Composable
+fun PdfViewer(
+   modifier: Modifier = Modifier.fillMaxSize(),
+   url: String,
+   documentDescription: String,
+   verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp)
+){
+
+}
+
 
 @Throws(IOException::class)
 private fun copy(source: InputStream, target: OutputStream) {
