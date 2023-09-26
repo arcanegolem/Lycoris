@@ -19,7 +19,8 @@ class MainActivity : ComponentActivity() {
                modifier = Modifier.fillMaxSize(),
                color = MaterialTheme.colorScheme.background
             ) {
-               PdfViewer(pdfResId = R.raw.gost_23858_79, documentDescription = "pdfviewer_libtest")
+//               PdfViewer(pdfResId = R.raw.gost_23858_79, documentDescription = "pdfviewer_libtest")
+               PdfViewer(url = "https://myreport.altervista.org/Lorem_Ipsum.pdf", headers = hashMapOf("headerKey" to "headerValue"))
             }
          }
       }

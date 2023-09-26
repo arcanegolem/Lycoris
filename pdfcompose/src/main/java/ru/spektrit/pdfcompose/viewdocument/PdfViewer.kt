@@ -52,7 +52,10 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import retrofit2.http.Url
+import ru.spektrit.pdfcompose.network.provideDownloadInterface
 import ru.spektrit.pdfcompose.utils.ImageDialog
+import ru.spektrit.pdfcompose.utils.provideFileName
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -410,17 +413,195 @@ fun PdfViewer(
  *
  * [modifier] - [Modifier] interface for the whole composable, by default fills max size available
  * [url] - URL to PDF document
- * [documentDescription] - Similar to content description but cannot be null in this case
  * [verticalArrangement] - Page arrangement
  */
 @Composable
 fun PdfViewer(
    modifier: Modifier = Modifier.fillMaxSize(),
-   url: String,
-   documentDescription: String,
+   @Url url: String,
+   headers: HashMap<String, String>,
    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp)
 ){
 
+   val rendererScope = rememberCoroutineScope()
+   val mutex = remember { Mutex() }
+
+   // TODO: Прикрутить отображение загрузки документа
+   var docLoadPercentage = 0
+   var docLoad = 0
+   val bufferSize = 8192
+
+   val context = LocalContext.current
+
+   val renderer by produceState<PdfRenderer?>(null, null) {
+      rendererScope.launch(Dispatchers.IO) {
+         val file = File(context.cacheDir, provideFileName())
+         val response = provideDownloadInterface(headers).downloadFile(url)
+         val responseByteStream = response.byteStream()
+
+         responseByteStream.use { inputStream ->
+            file.outputStream().use { outputStream ->
+               val totalByteCount = response.contentLength()
+               var data = ByteArray(bufferSize)
+               var count = inputStream.read(data)
+               while (count != -1) {
+                  if (totalByteCount > 0) {
+                     docLoad += bufferSize
+                     docLoadPercentage =
+                        (docLoad * (100 / totalByteCount.toFloat())).toInt()
+                  }
+                  outputStream.write(data, 0, count)
+                  data = ByteArray(bufferSize)
+                  count = inputStream.read(data)
+               }
+            }
+         }
+         val input = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
+         value = PdfRenderer(input)
+      }
+      awaitDispose {
+         val currentRenderer = value
+         rendererScope.launch(Dispatchers.IO) {
+            mutex.withLock {
+               currentRenderer?.close()
+            }
+         }
+      }
+   }
+   val imageLoader = context.imageLoader
+   val imageLoadingScope = rememberCoroutineScope()
+   BoxWithConstraints(modifier = modifier) {
+      val width = with(LocalDensity.current) { maxWidth.toPx() }.toInt()
+      val height = (width * sqrt(2f)).toInt()
+      val pageCount by remember(renderer) { derivedStateOf { renderer?.pageCount ?: 0 } }
+
+      val lazyListState = rememberLazyListState()
+      var currentPage by remember { mutableStateOf(1) }
+
+      // TODO: Оптимизировать отслеживание текущей страницы
+      val fullyVisibleIndices: List<Int> by remember {
+         derivedStateOf {
+            val layoutInfo = lazyListState.layoutInfo
+            val visibleItemsInfo = layoutInfo.visibleItemsInfo
+            if (visibleItemsInfo.isEmpty()) {
+               emptyList()
+            } else {
+               val fullyVisibleItemsInfo = visibleItemsInfo.toMutableList()
+               val lastItem = fullyVisibleItemsInfo.last()
+               val viewportHeight = layoutInfo.viewportEndOffset + layoutInfo.viewportStartOffset
+               if (lastItem.offset + lastItem.size > viewportHeight) { fullyVisibleItemsInfo.removeLast() }
+               val firstItemIfLeft = fullyVisibleItemsInfo.firstOrNull()
+               if (firstItemIfLeft != null && firstItemIfLeft.offset < layoutInfo.viewportStartOffset) {
+                  fullyVisibleItemsInfo.removeFirst()
+               }
+
+               fullyVisibleItemsInfo.map { it.index }
+            }
+         }
+      }
+
+      LazyColumn(
+         verticalArrangement = verticalArrangement,
+         state = lazyListState
+      ) {
+         items(
+            count = pageCount,
+            key = { index -> "$url-$index" }
+         ) { index ->
+            val isVisible by remember(index) {
+               derivedStateOf { fullyVisibleIndices.contains(index) } }
+
+            if (isVisible) { currentPage = index }
+
+            val cacheKey = MemoryCache.Key("$url-$index")
+            val cacheValue : Bitmap? = imageLoader.memoryCache?.get(cacheKey)?.bitmap
+
+            var bitmap : Bitmap? by remember { mutableStateOf(cacheValue)}
+            if (bitmap == null) {
+               DisposableEffect(url, index) {
+                  val job = imageLoadingScope.launch(Dispatchers.IO) {
+                     val destinationBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+                     mutex.withLock {
+                        Log.d("PdfGenerator", "Loading PDF $url - page ${index + 1}/$pageCount")
+                        if (!coroutineContext.isActive) return@launch
+                        try {
+                           renderer?.let {
+                              it.openPage(index).use { page ->
+                                 page.render(destinationBitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+                              }
+                           }
+                        } catch (e: Exception) {
+                           return@launch
+                        }
+                     }
+                     bitmap = destinationBitmap
+                  }
+                  onDispose {
+                     job.cancel()
+                  }
+               }
+               Box(modifier = Modifier
+                  .background(Color.White)
+                  .aspectRatio(1f / sqrt(2f))
+                  .fillMaxWidth())
+            } else {
+               val request = ImageRequest.Builder(context)
+                  .size(width, height)
+                  .memoryCacheKey(cacheKey)
+                  .data(bitmap)
+                  .build()
+
+               Box {
+                  var isEnlargedDialogDisplayed by remember { mutableStateOf(false) }
+                  val interactionSource = MutableInteractionSource()
+
+                  Icon(
+                     modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(15.dp)
+                        .zIndex(1f),
+                     imageVector = Icons.Rounded.Search,
+                     contentDescription = "Magnify Indicator"
+                  )
+
+                  Image(
+                     modifier = Modifier
+                        .background(Color.White)
+                        .aspectRatio(1f / sqrt(2f))
+                        .fillMaxWidth()
+                        .clickable(
+                           interactionSource = interactionSource,
+                           indication = null
+                        ) { isEnlargedDialogDisplayed = true },
+                     contentScale = ContentScale.Fit,
+                     painter = rememberAsyncImagePainter(request),
+                     contentDescription = "Page ${index + 1} of $pageCount"
+                  )
+
+                  if (isEnlargedDialogDisplayed) {
+                     ImageDialog(img = request) {
+                        isEnlargedDialogDisplayed = false
+                     }
+                  }
+               }
+            }
+
+            if (index != pageCount - 1) {
+               Spacer(modifier = Modifier
+                  .fillMaxWidth()
+                  .height(15.dp))
+            }
+         }
+      }
+
+      Box(modifier = Modifier
+         .align(Alignment.TopEnd)
+         .padding(10.dp)
+         .zIndex(1f)
+      ) {
+         Text(text = "${currentPage + 1}/$pageCount")
+      }
+   }
 }
 
 
