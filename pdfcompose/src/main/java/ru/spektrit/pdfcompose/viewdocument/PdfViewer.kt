@@ -55,12 +55,9 @@ import kotlinx.coroutines.sync.withLock
 import retrofit2.http.Url
 import ru.spektrit.pdfcompose.network.provideDownloadInterface
 import ru.spektrit.pdfcompose.utils.ImageDialog
+import ru.spektrit.pdfcompose.utils.PfdHelper
 import ru.spektrit.pdfcompose.utils.provideFileName
 import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
 import kotlin.math.sqrt
 
 /**
@@ -85,14 +82,8 @@ fun PdfViewer(
 
    val renderer by produceState<PdfRenderer?>(null, null) {
       rendererScope.launch(Dispatchers.IO) {
-         val inputStream = context.resources.openRawResource(pdfResId)
-         val outputDir = context.cacheDir
-         val tempFile = File.createTempFile(documentDescription, "pdf", outputDir)
-         tempFile.mkdirs()
-         tempFile.deleteOnExit()
-         val outputStream = FileOutputStream(tempFile)
-         copy(inputStream, outputStream)
-         val input = ParcelFileDescriptor.open(tempFile, ParcelFileDescriptor.MODE_READ_ONLY)
+         val pfdHelper = PfdHelper()
+         val input = pfdHelper.getPfd(context, pdfResId, documentDescription)
          value = PdfRenderer(input)
       }
       awaitDispose {
@@ -605,9 +596,4 @@ fun PdfViewer(
 }
 
 
-@Throws(IOException::class)
-private fun copy(source: InputStream, target: OutputStream) {
-   val buf = ByteArray(8192)
-   var length: Int
-   while (source.read(buf).also { length = it } > 0) { target.write(buf, 0, length) }
-}
+
