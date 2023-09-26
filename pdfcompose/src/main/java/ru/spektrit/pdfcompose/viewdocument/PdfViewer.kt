@@ -42,7 +42,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import androidx.core.net.toFile
 import coil.compose.rememberAsyncImagePainter
 import coil.imageLoader
 import coil.memory.MemoryCache
@@ -83,8 +82,7 @@ fun PdfViewer(
    val renderer by produceState<PdfRenderer?>(null, null) {
       rendererScope.launch(Dispatchers.IO) {
          val pfdHelper = PfdHelper()
-         val input = pfdHelper.getPfd(context, pdfResId, documentDescription)
-         value = PdfRenderer(input)
+         value = PdfRenderer(pfdHelper.getPfd(context, pdfResId, documentDescription))
       }
       awaitDispose {
          val currentRenderer = value
@@ -251,8 +249,8 @@ fun PdfViewer(
 
    val renderer by produceState<PdfRenderer?>(null, uri) {
       rendererScope.launch(Dispatchers.IO) {
-         val input = ParcelFileDescriptor.open(uri.toFile(), ParcelFileDescriptor.MODE_READ_ONLY)
-         value = PdfRenderer(input)
+         val pfdHelper = PfdHelper()
+         value = PdfRenderer(pfdHelper.getPfd(uri))
       }
       awaitDispose {
          val currentRenderer = value
@@ -438,8 +436,7 @@ fun PdfViewer(
                while (count != -1) {
                   if (totalByteCount > 0) {
                      docLoad += bufferSize
-                     docLoadPercentage =
-                        (docLoad * (100 / totalByteCount.toFloat())).toInt()
+                     docLoadPercentage = (docLoad * (100 / totalByteCount.toFloat())).toInt()
                   }
                   outputStream.write(data, 0, count)
                   data = ByteArray(bufferSize)
@@ -447,8 +444,8 @@ fun PdfViewer(
                }
             }
          }
-         val input = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
-         value = PdfRenderer(input)
+
+         value = PdfRenderer(ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY))
       }
       awaitDispose {
          val currentRenderer = value
@@ -499,8 +496,7 @@ fun PdfViewer(
             count = pageCount,
             key = { index -> "$url-$index" }
          ) { index ->
-            val isVisible by remember(index) {
-               derivedStateOf { fullyVisibleIndices.contains(index) } }
+            val isVisible by remember(index) { derivedStateOf { fullyVisibleIndices.contains(index) } }
 
             if (isVisible) { currentPage = index }
 
