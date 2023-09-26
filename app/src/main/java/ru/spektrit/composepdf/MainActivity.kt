@@ -21,8 +21,7 @@ class MainActivity : ComponentActivity() {
             ) {
                PdfViewer(
                   url = "http://tndt.idspektr.ru/images/stories/archive/03_2023/tndt_2023_03.pdf",
-                  headers = hashMapOf("headerKey" to "headerValue"
-                  )
+                  headers = hashMapOf( "headerKey" to "headerValue" )
                )
             }
          }
