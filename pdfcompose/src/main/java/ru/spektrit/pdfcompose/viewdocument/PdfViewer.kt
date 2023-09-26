@@ -609,7 +609,5 @@ fun PdfViewer(
 private fun copy(source: InputStream, target: OutputStream) {
    val buf = ByteArray(8192)
    var length: Int
-   while (source.read(buf).also { length = it } > 0) {
-      target.write(buf, 0, length)
-   }
+   while (source.read(buf).also { length = it } > 0) { target.write(buf, 0, length) }
 }
