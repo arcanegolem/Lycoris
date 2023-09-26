@@ -24,6 +24,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -416,7 +417,7 @@ fun PdfViewer(
    val mutex = remember { Mutex() }
 
    // TODO: Прикрутить отображение загрузки документа
-   var docLoadPercentage = 0
+   var docLoadPercentage by remember { mutableStateOf( 0 ) }
    var docLoad = 0
    val bufferSize = 8192
 
@@ -486,6 +487,18 @@ fun PdfViewer(
                fullyVisibleItemsInfo.map { it.index }
             }
          }
+      }
+
+      if (docLoadPercentage < 100) {
+         LinearProgressIndicator(
+            modifier = Modifier
+               .fillMaxWidth()
+               .zIndex(1f)
+               .align(Alignment.TopCenter),
+            progress = docLoadPercentage / 100f,
+            color = Color.Cyan,
+            trackColor = Color.DarkGray
+         )
       }
 
       LazyColumn(
@@ -581,12 +594,14 @@ fun PdfViewer(
          }
       }
 
-      Box(modifier = Modifier
-         .align(Alignment.TopEnd)
-         .padding(10.dp)
-         .zIndex(1f)
-      ) {
-         Text(text = "${currentPage + 1}/$pageCount")
+      if (pageCount > 0) {
+         Text(
+            modifier = Modifier
+               .align(Alignment.TopEnd)
+               .padding(10.dp)
+               .zIndex(1f),
+            text = "${currentPage + 1}/$pageCount"
+         )
       }
    }
 }
