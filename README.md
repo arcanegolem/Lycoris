@@ -1,4 +1,5 @@
 # Lycoris
+Lycoris is an effortless PDF viewing library fully made with Jetpack Compose. It depends on Retrofit2 and Coil libraries.
 
 ## Contents
 * [Requirements](#Requrements)
