@@ -3,6 +3,7 @@
 ## Contents
 * [Requirements](#Requrements)
 * [Usage](#Usage)
+* [Known Issues](#Known-issues)
 
 ## Requirements
 
@@ -53,7 +54,7 @@ fun PdfViewer(
 
 // Use-case example
 PdfViewer(
-  uri = // Your URI.
+  uri = // Your URI
 )
 ```
 
@@ -74,3 +75,6 @@ PdfViewer(
   headers = hashMapOf( "headerKey" to "headerValue" )
 )
 ```
+
+## Known issues
+- Occasional slow load of PDF documents retrieved via URL
