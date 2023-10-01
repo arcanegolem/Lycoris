@@ -1,4 +1,4 @@
-# ComposePDF
+# Lycoris
 
 TODO:
 - Usage example
