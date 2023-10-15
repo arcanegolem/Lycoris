@@ -41,6 +41,13 @@ import ru.spektrit.pdfcompose.utils.provideFileName
 import java.io.File
 import kotlin.math.sqrt
 
+/**
+ * PDF document viewer (via [HorizontalPager]) from [RawRes]"
+ *
+ * @param [modifier] [Modifier] interface for the whole composable, by default fills max size available
+ * @param [pdfResId] Raw resource id of a PDF document
+ * @param [documentDescription] Similar to content description but cannot be null in this case
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalPagerPdfViewer(
@@ -124,6 +131,12 @@ fun HorizontalPagerPdfViewer(
    }
 }
 
+/**
+ * PDF document viewer (via [HorizontalPager]) from [Uri]"
+ *
+ * @param [modifier] [Modifier] interface for the whole composable, by default fills max size available
+ * @param [uri] [Uri] from which document should be retrieved
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalPagerPdfViewer(
@@ -206,6 +219,12 @@ fun HorizontalPagerPdfViewer(
    }
 }
 
+/**
+ * PDF document viewer (via [HorizontalPager]) from [Url]
+ *
+ * @param [modifier] [Modifier] interface for the whole composable, by default fills max size available
+ * @param [url] [Url] where PDF document is stored at
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalPagerPdfViewer(

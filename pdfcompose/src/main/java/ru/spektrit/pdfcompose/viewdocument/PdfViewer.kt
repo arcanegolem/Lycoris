@@ -61,12 +61,12 @@ import java.io.File
 import kotlin.math.sqrt
 
 /**
- * PDF document viewer from resources
+ * PDF document viewer (via [LazyColumn]) from [RawRes]"
  *
- * [modifier] - [Modifier] interface for the whole composable, by default fills max size available
- * [pdfResId] - Raw resource id of a PDF document
- * [documentDescription] - Similar to content description but cannot be null in this case
- * [verticalArrangement] - Page arrangement
+ * @param [modifier] [Modifier] interface for the whole composable, by default fills max size available
+ * @param [pdfResId] Raw resource id of a PDF document
+ * @param [documentDescription] Similar to content description but cannot be null in this case
+ * @param [verticalArrangement] Page arrangement
  */
 @Composable
 fun PdfViewer(
@@ -215,11 +215,11 @@ fun PdfViewer(
 }
 
 /**
- * PDF document viewer from [Uri]
+ * PDF document viewer (via [LazyColumn]) from [Uri]
  *
- * [modifier] - [Modifier] interface for the whole composable, by default fills max size available
- * [uri] - [Uri] from which document should be retrieved
- * [verticalArrangement] - Page arrangement
+ * @param [modifier] [Modifier] interface for the whole composable, by default fills max size available
+ * @param [uri] [Uri] from which document should be retrieved
+ * @param [verticalArrangement] Page arrangement
  */
 @Composable
 fun PdfViewer(
@@ -365,11 +365,11 @@ fun PdfViewer(
 }
 
 /**
- * PDF document viewer from URL
+ * PDF document viewer (via [LazyColumn]) from [Url]
  *
- * [modifier] - [Modifier] interface for the whole composable, by default fills max size available
- * [url] - URL to PDF document
- * [verticalArrangement] - Page arrangement
+ * @param [modifier] [Modifier] interface for the whole composable, by default fills max size available
+ * @param [url] [Url] where PDF document is stored at
+ * @param [verticalArrangement] Page arrangement
  */
 @Composable
 fun PdfViewer(
@@ -377,7 +377,7 @@ fun PdfViewer(
    @Url url: String,
    headers: HashMap<String, String>,
    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp)
-){
+) {
 
    val rendererScope = rememberCoroutineScope()
    val mutex = remember { Mutex() }
