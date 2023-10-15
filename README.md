@@ -30,7 +30,7 @@ NOTE: Library is not yet published anywhere, so you need to clone this repo and 
 ```
 
 ## Usage
-Module contains overloaded `PdfViewer`, `HorizontalPagerPdfViewer` and `VerticalPagerPdfViewer` composable function, usage examples below:
+Module contains overloaded `PdfViewer`, `HorizontalPagerPdfViewer` and `VerticalPagerPdfViewer` composable functions, usage examples below:
 
 **Retrieving PDF document via raw resource:**
 ```kotlin
