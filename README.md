@@ -31,7 +31,8 @@ NOTE: Library is not yet published anywhere, so you need to clone this repo and 
 
 ## Usage
 Module contains overloaded `PdfViewer`, `HorizontalPagerPdfViewer` and `VerticalPagerPdfViewer` composable functions, usage examples below:
-WARNING: `PdfViewer` function utilizes LazyColumn composable.
+
+**WARNING:** `PdfViewer` function utilizes LazyColumn composable.
 
 **Retrieving PDF document via raw resource:**
 ```kotlin
