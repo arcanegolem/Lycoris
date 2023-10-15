@@ -225,7 +225,6 @@ fun HorizontalPagerPdfViewer(
          val file = File(context.cacheDir, provideFileName())
          val response = provideDownloadInterface(headers).downloadFile(url)
          val responseByteStream = response.byteStream()
-         context.filesDir
 
          responseByteStream.use { inputStream ->
             file.outputStream().use { outputStream ->
