@@ -31,11 +31,11 @@ NOTE: Library is not yet published anywhere, so you need to clone this repo and 
 
 ## Usage
 Module contains overloaded `PdfViewer`, `HorizontalPagerPdfViewer` and `VerticalPagerPdfViewer` composable functions, usage examples below:
+WARNING: `PdfViewer` function utilizes LazyColumn composable.
 
 **Retrieving PDF document via raw resource:**
 ```kotlin
-// Function structure
-@Composable
+//============== Parameters ================
 fun PdfViewer(
    modifier: Modifier = Modifier.fillMaxSize(),
    @RawRes pdfResId: Int,
@@ -43,8 +43,30 @@ fun PdfViewer(
    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp)
 )
 
-// Use-case example
+fun HorizontalPagerPdfViewer(
+   modifier: Modifier = Modifier.fillMaxWidth(),
+   @RawRes pdfResId: Int,
+   documentDescription : String
+)
+
+fun VerticalPagerPdfViewer(
+   modifier: Modifier = Modifier.fillMaxWidth(),
+   @RawRes pdfResId: Int,
+   documentDescription : String
+)
+
+//================ Usage ===================
 PdfViewer(
+  pdfResId = R.raw.sample_pdf, 
+  documentDescription = "sample description",
+)
+
+HorizontalPagerPdfViewer(
+  pdfResId = R.raw.sample_pdf, 
+  documentDescription = "sample description",
+)
+
+VerticalPagerPdfViewer(
   pdfResId = R.raw.sample_pdf, 
   documentDescription = "sample description",
 )
@@ -52,24 +74,40 @@ PdfViewer(
 
 **Retriving PDF document via URI:**
 ```kotlin
-// Function structure
-@Composable
+//============== Parameters ================
 fun PdfViewer(
    modifier: Modifier = Modifier.fillMaxSize(),
    uri: Uri,
    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp)
 )
 
-// Use-case example
+fun HorizontalPagerPdfViewer(
+   modifier: Modifier = Modifier.fillMaxWidth(),
+   uri: Uri,
+)
+
+fun VerticalPagerPdfViewer(
+   modifier: Modifier = Modifier.fillMaxWidth(),
+   uri: Uri,
+)
+
+//================ Usage ===================
 PdfViewer(
+  uri = // Your URI
+)
+
+HorizontalPagerPdfViewer(
+  uri = // Your URI
+)
+
+VerticalPagerPdfViewer(
   uri = // Your URI
 )
 ```
 
 **Retriving PDF document via URL:**
 ```kotlin
-// Function structure
-@Composable
+//============== Parameters ================
 fun PdfViewer(
    modifier: Modifier = Modifier.fillMaxSize(),
    @Url url: String,
@@ -77,8 +115,30 @@ fun PdfViewer(
    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp)
 )
 
-// Use-case example
+fun HorizontalPagerPdfViewer(
+   modifier: Modifier = Modifier.fillMaxWidth(),
+   @Url url: String,
+   headers: HashMap<String, String>,
+)
+
+fun VerticalPagerPdfViewer(
+   modifier: Modifier = Modifier.fillMaxWidth(),
+   @Url url: String,
+   headers: HashMap<String, String>,
+)
+
+//================ Usage ===================
 PdfViewer(
+  url = "https://sample.link.com/sample_pdf.pdf",
+  headers = hashMapOf( "headerKey" to "headerValue" )
+)
+
+HorizontalPagerPdfViewer(
+  url = "https://sample.link.com/sample_pdf.pdf",
+  headers = hashMapOf( "headerKey" to "headerValue" )
+)
+
+VerticalPagerPdfViewer(
   url = "https://sample.link.com/sample_pdf.pdf",
   headers = hashMapOf( "headerKey" to "headerValue" )
 )
