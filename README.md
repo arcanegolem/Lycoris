@@ -3,9 +3,14 @@
 Lycoris is an effortless PDF viewing library fully made with Jetpack Compose. Depends on Retrofit2 and Coil.
 
 ## Contents
+* [New features](#New-featues)
 * [Requirements](#Requrements)
 * [Usage](#Usage)
 * [Known Issues](#Known-issues)
+
+## New features
+* `HorizontalPagerPdfViewer`
+* `VerticalPagerPdfViewer`
 
 ## Requirements
 NOTE: Library is not yet published anywhere, so you need to clone this repo and import `pdfcompose` module in order to use it.
