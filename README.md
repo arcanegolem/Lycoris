@@ -1,5 +1,5 @@
 # Lycoris
-![Lycoris Header](https://github.com/arcanegolem/Lycoris/blob/master/images/lycoris_header.jpg)
+![Lycoris Header](https://github.com/arcanegolem/Lycoris/blob/master/images/header.jpg)
 Lycoris is an effortless PDF viewing library fully made with Jetpack Compose. Depends on Retrofit2 and Coil.
 
 ## Contents
