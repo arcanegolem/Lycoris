@@ -162,10 +162,7 @@ fun PdfViewer(
                   }
                   onDispose { job.cancel() }
                }
-               Box(modifier = Modifier
-                  .background(Color.White)
-                  .aspectRatio(1f / sqrt(2f))
-                  .fillMaxWidth())
+               PagePlaceHolder(Color.White)
             } else {
                val request = ImageRequest.Builder(context)
                   .size(width, height)
@@ -315,10 +312,7 @@ fun PdfViewer(
                   }
                   onDispose { job.cancel() }
                }
-               Box(modifier = Modifier
-                  .background(Color.White)
-                  .aspectRatio(1f / sqrt(2f))
-                  .fillMaxWidth())
+               PagePlaceHolder(Color.White)
             } else {
                val request = ImageRequest.Builder(context)
                   .size(width, height)
@@ -507,10 +501,7 @@ fun PdfViewer(
                   }
                   onDispose { job.cancel() }
                }
-               Box(modifier = Modifier
-                  .background(Color.White)
-                  .aspectRatio(1f / sqrt(2f))
-                  .fillMaxWidth())
+               PagePlaceHolder(Color.White)
             } else {
                val request = ImageRequest.Builder(context)
                   .size(width, height)
