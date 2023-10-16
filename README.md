@@ -146,4 +146,4 @@ VerticalPagerPdfViewer(
 ```
 
 ## Known issues
-- Occasional slow load of PDF documents retrieved via URL
+- Occasional slow load of PDF documents retrieved via URL in PdfViewer
