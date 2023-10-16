@@ -13,7 +13,7 @@ Lycoris is an effortless PDF viewing library fully made with Jetpack Compose. De
 * `VerticalPagerPdfViewer`
 
 ## Requirements
-NOTE: Library is not yet published anywhere, so you need to clone this repo and import `pdfcompose` module in order to use it.
+NOTE: Library is not yet published anywhere, so you need to clone this repo and import `lycoris` module in order to use it.
 
 - Add `INTERNET` permission to your Android Manifest
 ```xml
