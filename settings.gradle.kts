@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Compose PDF"
 include(":app")
-include(":pdfcompose")
+include(":lycoris")
