@@ -20,7 +20,7 @@ NOTE: Library is not yet published anywhere, so you need to clone this repo and 
 <uses-permission android:name="android.permission.INTERNET" />
 ```
 
-- [OPTIONAL] Enable usage of cleartext traffic to your Android Manifest `<application>` tag to enable downloading of PDF documents from unsecure `http://` URLs
+- [OPTIONAL] Set `android:usesCleartextTraffic="true"` in your Android Manifest `<application>` tag to enable downloading of PDF documents from unsecure `http://` URLs
 ```xml
 <application>
   ...
