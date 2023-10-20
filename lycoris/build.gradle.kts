@@ -73,7 +73,7 @@ publishing {
    publications {
       register<MavenPublication>("release") {
          groupId = "ru.spektrit"
-         artifactId = "pdfcompose"
+         artifactId = "lycoris"
          version = "0.1.0"
 
          afterEvaluate {
