@@ -1,4 +1,4 @@
-# Lycoris
+# Lycoris [![](https://jitpack.io/v/arcanegolem/Lycoris.svg)](https://jitpack.io/#arcanegolem/Lycoris)
 ![Lycoris Header](https://github.com/arcanegolem/Lycoris/blob/master/images/header.jpg)
 Lycoris is an effortless PDF viewing library fully made with Jetpack Compose. Depends on Retrofit2 and Coil.
 
@@ -6,6 +6,7 @@ Lycoris is an effortless PDF viewing library fully made with Jetpack Compose. De
 * [NEW](#NEW)
 * [Requirements](#Requirements)
 * [Usage](#Usage)
+* [Thanks to](#Thanks-to)
 * [Known Issues](#Known-issues)
 
 ## NEW
@@ -13,8 +14,6 @@ Lycoris is an effortless PDF viewing library fully made with Jetpack Compose. De
 * `VerticalPagerPdfViewer`
 
 ## Requirements
-NOTE: Library is not yet published anywhere, so you need to clone this repo and import `lycoris` module in order to use it.
-
 - Add `INTERNET` permission to your Android Manifest
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
@@ -27,6 +26,24 @@ NOTE: Library is not yet published anywhere, so you need to clone this repo and 
   android:usesCleartextTraffic="true"
   ...
 </application>
+```
+
+- Add Jitpack to your project repositories
+```gradle
+dependencyResolutionManagement {
+  repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+  repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+  }
+}
+```
+
+- Add lycoris to your project dependencies
+```gradle
+dependencies {
+  implementation 'com.github.arcanegolem:Lycoris:0.1.0'
+}
 ```
 
 ## Usage
@@ -144,6 +161,9 @@ VerticalPagerPdfViewer(
   headers = hashMapOf( "headerKey" to "headerValue" )
 )
 ```
+
+## Thanks to
+- [Mikołaj Pich](https://github.com/mklkj) for preparing Lycoris for it's initial release.
 
 ## Known issues
 - Occasional slow load of PDF documents retrieved via URL in PdfViewer
