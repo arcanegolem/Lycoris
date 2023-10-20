@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -78,10 +79,11 @@ fun HorizontalPagerPdfViewer(
          val width = with(LocalDensity.current) { maxWidth.toPx() }.toInt()
          val height = (width * sqrt(2f)).toInt()
 
+         val pagerState = rememberPagerState(pageCount = { r.pageCount })
          val imageLoadingScope = rememberCoroutineScope()
          val imageLoader = context.imageLoader
 
-         HorizontalPager(pageCount = r.pageCount) { index ->
+         HorizontalPager(state = pagerState) { index ->
             val cacheKey = MemoryCache.Key("$documentDescription - $index")
             val cacheValue : Bitmap? = imageLoader.memoryCache?.get(cacheKey)?.bitmap
 
@@ -119,8 +121,8 @@ fun HorizontalPagerPdfViewer(
                Box {
                   Image(
                      modifier = Modifier
-                        .aspectRatio(1f / sqrt(2f))
-                        .fillMaxWidth(),
+                         .aspectRatio(1f / sqrt(2f))
+                         .fillMaxWidth(),
                      painter = rememberAsyncImagePainter(request),
                      contentDescription = "Page ${index + 1} of ${r.pageCount}"
                   )
@@ -166,10 +168,11 @@ fun HorizontalPagerPdfViewer(
          val width = with(LocalDensity.current) { maxWidth.toPx() }.toInt()
          val height = (width * sqrt(2f)).toInt()
 
+         val pagerState = rememberPagerState(pageCount = { r.pageCount })
          val imageLoadingScope = rememberCoroutineScope()
          val imageLoader = context.imageLoader
 
-         HorizontalPager(pageCount = r.pageCount) { index ->
+         HorizontalPager(state = pagerState) { index ->
             val cacheKey = MemoryCache.Key("$uri - $index")
             val cacheValue : Bitmap? = imageLoader.memoryCache?.get(cacheKey)?.bitmap
 
@@ -207,8 +210,8 @@ fun HorizontalPagerPdfViewer(
                Box {
                   Image(
                      modifier = Modifier
-                        .aspectRatio(1f / sqrt(2f))
-                        .fillMaxWidth(),
+                         .aspectRatio(1f / sqrt(2f))
+                         .fillMaxWidth(),
                      painter = rememberAsyncImagePainter(request),
                      contentDescription = "Page ${index + 1} of ${r.pageCount}"
                   )
@@ -272,10 +275,11 @@ fun HorizontalPagerPdfViewer(
          val width = with(LocalDensity.current) { maxWidth.toPx() }.toInt()
          val height = (width * sqrt(2f)).toInt()
 
+         val pagerState = rememberPagerState(pageCount = { r.pageCount })
          val imageLoadingScope = rememberCoroutineScope()
          val imageLoader = context.imageLoader
 
-         HorizontalPager(pageCount = r.pageCount) { index ->
+         HorizontalPager(state = pagerState) { index ->
             val cacheKey = MemoryCache.Key("$url - $index")
             val cacheValue : Bitmap? = imageLoader.memoryCache?.get(cacheKey)?.bitmap
 
@@ -313,8 +317,8 @@ fun HorizontalPagerPdfViewer(
                Box {
                   Image(
                      modifier = Modifier
-                        .aspectRatio(1f / sqrt(2f))
-                        .fillMaxWidth(),
+                         .aspectRatio(1f / sqrt(2f))
+                         .fillMaxWidth(),
                      painter = rememberAsyncImagePainter(request),
                      contentDescription = "Page ${index + 1} of ${r.pageCount}"
                   )
