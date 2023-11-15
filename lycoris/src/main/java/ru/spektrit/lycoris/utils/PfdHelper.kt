@@ -11,7 +11,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 
-class PfdHelper {
+internal class PfdHelper {
    fun getPfd ( context : Context, @RawRes pdfResId : Int, documentDescription : String ) : ParcelFileDescriptor {
       val inputStream = context.resources.openRawResource(pdfResId)
       val outputDir = context.cacheDir

@@ -1,34 +1,29 @@
 package ru.spektrit.lycoris.utils
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 
 
 @Composable
-fun ZoomableImage(
+internal fun ZoomableImage(
    modifier: Modifier,
    minScale: Float = 1f,
    maxScale: Float = 3f,
@@ -56,15 +51,15 @@ fun ZoomableImage(
 
 
 @Composable
-fun ZoomableBox(
+internal fun ZoomableBox(
    modifier: Modifier = Modifier,
    minScale: Float = 1f,
    maxScale: Float = 3f,
    content: @Composable ZoomableBoxScope.() -> Unit
 ) {
-   var scale by remember { mutableStateOf(1f) }
-   var offsetX by remember { mutableStateOf(0f) }
-   var offsetY by remember { mutableStateOf(0f) }
+   var scale by remember   { mutableFloatStateOf(1f) }
+   var offsetX by remember { mutableFloatStateOf(0f) }
+   var offsetY by remember { mutableFloatStateOf(0f) }
    var size by remember { mutableStateOf(IntSize.Zero) }
 
    Box(
@@ -89,7 +84,7 @@ fun ZoomableBox(
    }
 }
 
-interface ZoomableBoxScope {
+internal interface ZoomableBoxScope {
    val scale: Float
    val offsetX: Float
    val offsetY: Float
@@ -103,7 +98,7 @@ private data class ZoomableBoxScopeImplementation(
 
 
 @Composable
-fun ImageDialog(
+internal fun ImageDialog(
    img: Any,
    onDismissRequest : () -> Unit,
 ){
@@ -111,23 +106,9 @@ fun ImageDialog(
       properties = DialogProperties(usePlatformDefaultWidth = false),
       onDismissRequest = onDismissRequest
    ) {
-      Box(modifier = Modifier
-         .fillMaxSize()
-      ){
-         ZoomableImage(
-            modifier = Modifier
-               .fillMaxSize()
-               .background(color = Color.White),
-            img = img
-         )
-         Button(
-            modifier = Modifier
-               .padding(bottom = 30.dp)
-               .align(Alignment.BottomCenter),
-            onClick = { onDismissRequest() }
-         ) {
-            Text("Назад")
-         }
-      }
+      ZoomableImage(
+         modifier = Modifier.fillMaxSize(),
+         img = img
+      )
    }
 }
