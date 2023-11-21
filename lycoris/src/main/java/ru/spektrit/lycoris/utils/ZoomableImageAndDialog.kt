@@ -1,5 +1,6 @@
 package ru.spektrit.lycoris.utils
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
@@ -100,15 +102,20 @@ private data class ZoomableBoxScopeImplementation(
 @Composable
 internal fun ImageDialog(
    img: Any,
-   onDismissRequest : () -> Unit,
+   backgroundColor : Color,
+   onDismissRequest : () -> Unit
 ){
    Dialog(
       properties = DialogProperties(usePlatformDefaultWidth = false),
       onDismissRequest = onDismissRequest
    ) {
-      ZoomableImage(
-         modifier = Modifier.fillMaxSize(),
-         img = img
-      )
+      Box(
+         modifier = Modifier.background(color = backgroundColor)
+      ){
+         ZoomableImage(
+            modifier = Modifier.fillMaxSize(),
+            img = img
+         )
+      }
    }
 }

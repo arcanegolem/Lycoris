@@ -73,7 +73,8 @@ fun PdfViewer(
    modifier: Modifier = Modifier.fillMaxSize(),
    @RawRes pdfResId: Int,
    documentDescription: String,
-   verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp)
+   verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
+   dialogBackgroundColor: Color = Color.Transparent
 ) {
    val rendererScope = rememberCoroutineScope()
    val mutex = remember { Mutex() }
@@ -198,7 +199,7 @@ fun PdfViewer(
                   )
 
                   if (isEnlargedDialogDisplayed) {
-                     ImageDialog(img = request) { isEnlargedDialogDisplayed = false }
+                     ImageDialog(img = request, backgroundColor = dialogBackgroundColor) { isEnlargedDialogDisplayed = false }
                   }
                }
             }
@@ -225,7 +226,8 @@ fun PdfViewer(
 fun PdfViewer(
    modifier: Modifier = Modifier.fillMaxSize(),
    uri: Uri,
-   verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp)
+   verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
+   dialogBackgroundColor: Color = Color.Transparent
 ) {
    val rendererScope = rememberCoroutineScope()
    val mutex = remember { Mutex() }
@@ -348,7 +350,7 @@ fun PdfViewer(
                   )
 
                   if (isEnlargedDialogDisplayed) {
-                     ImageDialog(img = request) { isEnlargedDialogDisplayed = false }
+                     ImageDialog(img = request, backgroundColor = dialogBackgroundColor) { isEnlargedDialogDisplayed = false }
                   }
                }
             }
@@ -376,7 +378,9 @@ fun PdfViewer(
    modifier: Modifier = Modifier.fillMaxSize(),
    @Url url: String,
    headers: HashMap<String, String>,
-   verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp)
+   verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
+   dialogBackgroundColor: Color = Color.Transparent
+
 ) {
 
    val rendererScope = rememberCoroutineScope()
@@ -536,7 +540,7 @@ fun PdfViewer(
                   )
 
                   if (isEnlargedDialogDisplayed) {
-                     ImageDialog(img = request) { isEnlargedDialogDisplayed = false }
+                     ImageDialog(img = request, backgroundColor = dialogBackgroundColor) { isEnlargedDialogDisplayed = false }
                   }
                }
             }
