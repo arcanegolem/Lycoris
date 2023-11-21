@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import kotlin.math.sqrt
 
 @Composable
-fun PagePlaceHolder(backgroundColor : Color) {
+internal fun PagePlaceHolder(backgroundColor : Color) {
    Box(
       modifier = Modifier
          .background(backgroundColor)
