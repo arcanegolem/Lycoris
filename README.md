@@ -10,8 +10,8 @@ Lycoris is an effortless PDF viewing library fully made with Jetpack Compose. De
 * [Known Issues](#Known-issues)
 
 ## NEW
-* `HorizontalPagerPdfViewer`
-* `VerticalPagerPdfViewer`
+* Background color for enlarged page dialog
+* `Close` button hotfix
 
 ## Requirements
 - Add `INTERNET` permission to your Android Manifest
@@ -42,7 +42,7 @@ dependencyResolutionManagement {
 - Add lycoris to your project dependencies
 ```gradle
 dependencies {
-  implementation 'com.github.arcanegolem:Lycoris:0.1.0'
+  implementation 'com.github.arcanegolem:Lycoris:0.1.3'
 }
 ```
 
@@ -59,6 +59,7 @@ fun PdfViewer(
    @RawRes pdfResId: Int,
    documentDescription: String,
    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp)
+   dialogBackgroundColor: Color = Color.Transparent
 )
 
 fun HorizontalPagerPdfViewer(
@@ -97,6 +98,7 @@ fun PdfViewer(
    modifier: Modifier = Modifier.fillMaxSize(),
    uri: Uri,
    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp)
+   dialogBackgroundColor: Color = Color.Transparent
 )
 
 fun HorizontalPagerPdfViewer(
@@ -131,6 +133,7 @@ fun PdfViewer(
    @Url url: String,
    headers: HashMap<String, String>,
    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp)
+   dialogBackgroundColor: Color = Color.Transparent
 )
 
 fun HorizontalPagerPdfViewer(
