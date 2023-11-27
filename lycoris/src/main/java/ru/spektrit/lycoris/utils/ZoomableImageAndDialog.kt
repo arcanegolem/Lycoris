@@ -4,6 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -116,6 +120,16 @@ internal fun ImageDialog(
             modifier = Modifier.fillMaxSize(),
             img = img
          )
+         IconButton(
+            modifier = Modifier.align(Alignment.TopEnd),
+            onClick = onDismissRequest
+         ) {
+            Icon(
+               imageVector = Icons.Rounded.Close,
+               contentDescription = "Close",
+               tint = Color.LightGray
+            )
+         }
       }
    }
 }
