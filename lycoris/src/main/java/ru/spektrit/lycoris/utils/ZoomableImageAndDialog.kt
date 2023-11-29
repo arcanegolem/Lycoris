@@ -107,7 +107,9 @@ private data class ZoomableBoxScopeImplementation(
 internal fun ImageDialog(
    img: Any,
    backgroundColor : Color,
-   onDismissRequest : () -> Unit
+   minScale: Float,
+   maxScale: Float,
+   onDismissRequest : () -> Unit,
 ){
    Dialog(
       properties = DialogProperties(usePlatformDefaultWidth = false),
@@ -118,7 +120,9 @@ internal fun ImageDialog(
       ){
          ZoomableImage(
             modifier = Modifier.fillMaxSize(),
-            img = img
+            img = img,
+            minScale = minScale,
+            maxScale = maxScale
          )
          IconButton(
             modifier = Modifier.align(Alignment.TopEnd),
