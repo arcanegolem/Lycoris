@@ -74,7 +74,9 @@ fun PdfViewer(
    @RawRes pdfResId: Int,
    documentDescription: String,
    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
-   dialogBackgroundColor: Color = Color.Transparent
+   dialogBackgroundColor: Color = Color.Transparent,
+   minPageDialogScale : Float,
+   maxPageDialogScale : Float
 ) {
    val rendererScope = rememberCoroutineScope()
    val mutex = remember { Mutex() }
@@ -199,7 +201,12 @@ fun PdfViewer(
                   )
 
                   if (isEnlargedDialogDisplayed) {
-                     ImageDialog(img = request, backgroundColor = dialogBackgroundColor) { isEnlargedDialogDisplayed = false }
+                     ImageDialog(
+                        img = request,
+                        backgroundColor = dialogBackgroundColor,
+                        minScale = minPageDialogScale,
+                        maxScale = maxPageDialogScale
+                     ) { isEnlargedDialogDisplayed = false }
                   }
                }
             }
@@ -227,7 +234,9 @@ fun PdfViewer(
    modifier: Modifier = Modifier.fillMaxSize(),
    uri: Uri,
    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
-   dialogBackgroundColor: Color = Color.Transparent
+   dialogBackgroundColor: Color = Color.Transparent,
+   minPageDialogScale : Float,
+   maxPageDialogScale : Float
 ) {
    val rendererScope = rememberCoroutineScope()
    val mutex = remember { Mutex() }
@@ -350,7 +359,12 @@ fun PdfViewer(
                   )
 
                   if (isEnlargedDialogDisplayed) {
-                     ImageDialog(img = request, backgroundColor = dialogBackgroundColor) { isEnlargedDialogDisplayed = false }
+                     ImageDialog(
+                        img = request,
+                        backgroundColor = dialogBackgroundColor,
+                        minScale = minPageDialogScale,
+                        maxScale = maxPageDialogScale
+                     ) { isEnlargedDialogDisplayed = false }
                   }
                }
             }
@@ -379,7 +393,9 @@ fun PdfViewer(
    @Url url: String,
    headers: HashMap<String, String>,
    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
-   dialogBackgroundColor: Color = Color.Transparent
+   dialogBackgroundColor: Color = Color.Transparent,
+   minPageDialogScale : Float,
+   maxPageDialogScale : Float
 
 ) {
 
@@ -540,7 +556,12 @@ fun PdfViewer(
                   )
 
                   if (isEnlargedDialogDisplayed) {
-                     ImageDialog(img = request, backgroundColor = dialogBackgroundColor) { isEnlargedDialogDisplayed = false }
+                     ImageDialog(
+                        img = request,
+                        backgroundColor = dialogBackgroundColor,
+                        minScale = minPageDialogScale,
+                        maxScale = maxPageDialogScale
+                     ) { isEnlargedDialogDisplayed = false }
                   }
                }
             }
