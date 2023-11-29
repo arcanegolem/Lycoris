@@ -30,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
@@ -105,7 +106,7 @@ fun PdfViewer(
       val pageCount by remember(renderer) { derivedStateOf { renderer?.pageCount ?: 0 } }
 
       val lazyListState = rememberLazyListState()
-      var currentPage by remember { mutableStateOf(1) }
+      var currentPage by remember { mutableIntStateOf(1) }
 
       // TODO: Оптимизировать отслеживание текущей страницы
       val fullyVisibleIndices: List<Int> by remember {
@@ -263,7 +264,7 @@ fun PdfViewer(
       val pageCount by remember(renderer) { derivedStateOf { renderer?.pageCount ?: 0 } }
 
       val lazyListState = rememberLazyListState()
-      var currentPage by remember { mutableStateOf(1) }
+      var currentPage by remember { mutableIntStateOf(1) }
 
       // TODO: Оптимизировать отслеживание текущей страницы
       val fullyVisibleIndices: List<Int> by remember {
@@ -402,7 +403,7 @@ fun PdfViewer(
    val rendererScope = rememberCoroutineScope()
    val mutex = remember { Mutex() }
 
-   var docLoadPercentage by remember { mutableStateOf( 0 ) }
+   var docLoadPercentage by remember { mutableIntStateOf( 0 ) }
    var docLoad = 0
    val bufferSize = 8192
 
@@ -449,7 +450,7 @@ fun PdfViewer(
       val pageCount by remember(renderer) { derivedStateOf { renderer?.pageCount ?: 0 } }
 
       val lazyListState = rememberLazyListState()
-      var currentPage by remember { mutableStateOf(1) }
+      var currentPage by remember { mutableIntStateOf(1) }
 
       // TODO: Оптимизировать отслеживание текущей страницы
       val fullyVisibleIndices: List<Int> by remember {
