@@ -62,7 +62,7 @@ import java.io.File
 import kotlin.math.sqrt
 
 /**
- * PDF document viewer (via [LazyColumn]) from [RawRes]"
+ * PDF document viewer (via [LazyColumn]) from [RawRes]
  *
  * @param [modifier] [Modifier] interface for the whole composable, by default fills max size available
  * @param [pdfResId] Raw resource id of a PDF document
