@@ -42,7 +42,7 @@ dependencyResolutionManagement {
 - Add lycoris to your project dependencies
 ```gradle
 dependencies {
-  implementation 'com.github.arcanegolem:Lycoris:0.1.3'
+  implementation 'com.github.arcanegolem:Lycoris:0.1.4'
 }
 ```
 
