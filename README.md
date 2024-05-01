@@ -177,3 +177,4 @@ VerticalPagerPdfViewer(
 ## Known issues
 - Occasional slow load of PDF documents retrieved via URL in PdfViewer
 - Incorrect positioning of Viewer composables
+- Incorrect display of documents with custom page formats (horizontal pages for example)
