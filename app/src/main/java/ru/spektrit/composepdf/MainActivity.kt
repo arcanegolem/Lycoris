@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import ru.spektrit.composepdf.ui.theme.ComposePDFTheme
+import ru.spektrit.lycoris.viewdocument.PdfViewer
 
 class MainActivity : ComponentActivity() {
    override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,7 +18,12 @@ class MainActivity : ComponentActivity() {
             Surface(
                modifier = Modifier.fillMaxSize(),
                color = MaterialTheme.colorScheme.background
-            ) {  }
+            ) {
+               PdfViewer(
+                  modifier = Modifier.fillMaxSize(),
+                  pdfResId = R.raw.sample_multipage,
+               )
+            }
          }
       }
    }
