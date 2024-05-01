@@ -12,6 +12,7 @@ Lycoris is an effortless PDF viewing library fully made with Jetpack Compose. De
 ## NEW
 * Background color for enlarged page dialog
 * `Close` button hotfix
+* `PdfViewer` reworked (pinch to zoom instead of dialog for each page, fixed Issue #5)
 
 ## Requirements
 - Add `INTERNET` permission to your Android Manifest
