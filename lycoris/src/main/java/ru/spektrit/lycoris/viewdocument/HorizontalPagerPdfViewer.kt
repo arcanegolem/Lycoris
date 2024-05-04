@@ -52,7 +52,7 @@ import kotlin.math.sqrt
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalPagerPdfViewer(
-   modifier: Modifier = Modifier.fillMaxWidth(),
+   modifier: Modifier = Modifier,
    @RawRes pdfResId: Int,
    documentDescription : String
 ) {
@@ -142,7 +142,7 @@ fun HorizontalPagerPdfViewer(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalPagerPdfViewer(
-   modifier: Modifier = Modifier.fillMaxWidth(),
+   modifier: Modifier = Modifier,
    uri: Uri,
 ) {
    val rendererScope = rememberCoroutineScope()
@@ -231,7 +231,7 @@ fun HorizontalPagerPdfViewer(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalPagerPdfViewer(
-   modifier: Modifier = Modifier.fillMaxWidth(),
+   modifier: Modifier = Modifier,
    @Url url: String,
    headers: HashMap<String, String>,
 ) {
