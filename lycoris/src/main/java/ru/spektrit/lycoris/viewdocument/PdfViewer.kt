@@ -10,7 +10,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +36,10 @@ fun PdfViewer(
    modifier: Modifier = Modifier,
    @RawRes pdfResId: Int,
    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
+   iconTint : Color = Color.Black,
+   accentColor : Color = Color.DarkGray,
+   controlsAlignment: Alignment = Alignment.BottomEnd,
+   bitmapScale : Int = 1
 ) {
    val documentIdentifier = pdfResId.toString()
 
@@ -58,12 +64,16 @@ fun PdfViewer(
    }
 
    PdfViewerDisplay(
+      accentColor = accentColor,
       modifier = modifier,
       context = context,
       renderer = renderer,
       documentIdentifier = documentIdentifier,
       verticalArrangement = verticalArrangement,
-      mutex = mutex
+      mutex = mutex,
+      controlsAlignment = controlsAlignment,
+      iconTint = iconTint,
+      bitmapScale = bitmapScale
    )
 }
 
@@ -80,6 +90,10 @@ fun PdfViewer(
    modifier: Modifier = Modifier,
    uri: Uri,
    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
+   accentColor: Color = Color.DarkGray,
+   iconTint: Color = Color.Black,
+   controlsAlignment: Alignment = Alignment.BottomEnd,
+   bitmapScale : Int = 1
 ) {
    val rendererScope = rememberCoroutineScope()
    val mutex = remember { Mutex() }
@@ -100,12 +114,16 @@ fun PdfViewer(
    }
 
    PdfViewerDisplay(
+      accentColor = accentColor,
       modifier = modifier,
       context = context,
       renderer = renderer,
       documentIdentifier = uri.toString(),
       verticalArrangement = verticalArrangement,
-      mutex = mutex
+      mutex = mutex,
+      controlsAlignment = controlsAlignment,
+      iconTint = iconTint,
+      bitmapScale = bitmapScale
    )
 }
 
@@ -124,6 +142,10 @@ fun PdfViewer(
    @Url url: String,
    headers: HashMap<String, String>? = null,
    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
+   accentColor: Color = Color.DarkGray,
+   iconTint: Color = Color.Black,
+   controlsAlignment: Alignment = Alignment.BottomEnd,
+   bitmapScale : Int = 1
 ) {
 
    val rendererScope = rememberCoroutineScope()
@@ -144,12 +166,16 @@ fun PdfViewer(
    }
 
    PdfViewerDisplay(
+      accentColor = accentColor,
       modifier = modifier,
       context = context,
       renderer = renderer,
       documentIdentifier = url,
       verticalArrangement = verticalArrangement,
-      mutex = mutex
+      mutex = mutex,
+      controlsAlignment = controlsAlignment,
+      iconTint = iconTint,
+      bitmapScale = bitmapScale
    )
 }
 
