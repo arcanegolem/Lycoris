@@ -7,10 +7,12 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.rememberTransformableState
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.gestures.transformable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,8 +21,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.ZoomIn
+import androidx.compose.material.icons.rounded.ZoomOut
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -57,11 +62,17 @@ internal fun PdfViewerDisplay(
    context : Context,
    renderer: PdfRenderer?,
    documentIdentifier : String,
-   verticalArrangement: Arrangement.Vertical,
+   pagesVerticalArrangement: Arrangement.Vertical,
    mutex : Mutex,
+   accentColor : Color,
+   iconTint : Color,
+   controlsAlignment: Alignment,
+   bitmapScale : Int
 ) {
-   val imageLoader = context.imageLoader
+   val pdfViewerDisplayScope = rememberCoroutineScope()
    val imageLoadingScope = rememberCoroutineScope()
+
+   val imageLoader = context.imageLoader
 
    var viewerScale by remember { mutableFloatStateOf(1f) }
    var viewerOffset by remember { mutableStateOf(Offset.Zero) }
@@ -72,7 +83,7 @@ internal fun PdfViewerDisplay(
       val lazyListState = rememberLazyListState()
       var currentPage by remember { mutableIntStateOf(1) }
 
-      // TODO: Оптимизировать отслеживание текущей страницы
+      // TODO: Optimize current page tracking
       val fullyVisibleIndices: List<Int> by remember {
          derivedStateOf {
             val layoutInfo = lazyListState.layoutInfo
@@ -94,10 +105,46 @@ internal fun PdfViewerDisplay(
          }
       }
 
+      // Page count for some reason always starts with 2, so check is precise
+      if (pageCount > 2) {
+         Column(
+            modifier = Modifier
+               .align(controlsAlignment)
+               .padding(8.dp)
+               .zIndex(2f)
+         ) {
+            IconButton(
+               onClick = { viewerScale = (viewerScale + 0.5f).coerceIn(1f, 10f) },
+               colors = IconButtonDefaults.iconButtonColors(
+                  containerColor = accentColor.copy(alpha = 0.4f)
+               )
+            ) {
+               Icon(
+                  imageVector = Icons.Rounded.ZoomIn,
+                  contentDescription = "Zoom in",
+                  tint = iconTint
+               )
+            }
+            IconButton(
+               onClick = {
+                  viewerScale = 1f
+                  viewerOffset = Offset(0f, 0f)
+               },
+               colors = IconButtonDefaults.iconButtonColors(
+                  containerColor = accentColor.copy(alpha = 0.4f)
+               )
+            ) {
+               Icon(
+                  imageVector = Icons.Rounded.ZoomOut,
+                  contentDescription = "Zoom out",
+                  tint = iconTint
+               )
+            }
+         }
+      }
 
-      val transformableState = rememberTransformableState { zoomChange, panChange, _ ->
-         viewerScale = (viewerScale * zoomChange).coerceIn(1f, 10f)
 
+      val transformableState = rememberTransformableState { _, panChange, _ ->
          val extraWidth = (viewerScale - 1) * constraints.maxWidth
          val extraHeight = (viewerScale - 1) * constraints.maxHeight
 
@@ -106,8 +153,9 @@ internal fun PdfViewerDisplay(
 
          viewerOffset = Offset(
             x = (viewerOffset.x + panChange.x * viewerScale).coerceIn(-maxX, maxX),
-            y = (viewerOffset.y + panChange.y * viewerScale).coerceIn(-maxY, maxY),
+            y = (viewerOffset.y + (panChange.y / 2) * viewerScale).coerceIn(-maxY, maxY),
          )
+         pdfViewerDisplayScope.launch{ lazyListState.scrollBy(-(panChange.y / 2)) }
       }
       LazyColumn(
          userScrollEnabled = viewerScale == 1f,
@@ -119,7 +167,7 @@ internal fun PdfViewerDisplay(
                translationY = viewerOffset.y
             }
             .transformable(transformableState),
-         verticalArrangement = verticalArrangement,
+         verticalArrangement = pagesVerticalArrangement,
          state = lazyListState
       ) {
          items(
@@ -146,7 +194,7 @@ internal fun PdfViewerDisplay(
                         try {
                            renderer?.let {
                               it.openPage(index).use { page ->
-                                 destinationBitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
+                                 destinationBitmap = Bitmap.createBitmap(page.width * bitmapScale, page.height * bitmapScale, Bitmap.Config.ARGB_8888)
                                  page.render(destinationBitmap!!, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
                               }
                            }
@@ -171,15 +219,6 @@ internal fun PdfViewerDisplay(
                   .build()
 
                Box {
-                  Icon(
-                     modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(15.dp)
-                        .zIndex(1f),
-                     imageVector = Icons.Rounded.Search,
-                     contentDescription = "Magnify Indicator"
-                  )
-
                   Image(
                      modifier = Modifier
                         .background(Color.White)
@@ -198,12 +237,15 @@ internal fun PdfViewerDisplay(
          }
       }
 
-      Text(
-         modifier = Modifier
-            .align(Alignment.TopEnd)
-            .padding(10.dp)
-            .zIndex(1f),
-         text = "${currentPage + 1}/$pageCount"
-      )
+      // Page count for some reason always starts with 2, so check is precise
+      if (pageCount > 2) {
+         Text(
+            modifier = Modifier
+               .align(Alignment.TopEnd)
+               .padding(10.dp)
+               .zIndex(1f),
+            text = "${currentPage + 1}/$pageCount"
+         )
+      }
    }
 }
