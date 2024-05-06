@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ZoomIn
 import androidx.compose.material.icons.rounded.ZoomOut
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -41,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
@@ -157,84 +159,118 @@ internal fun PdfViewerDisplay(
          )
          pdfViewerDisplayScope.launch{ lazyListState.scrollBy(-(panChange.y / 2)) }
       }
-      LazyColumn(
-         userScrollEnabled = viewerScale == 1f,
-         modifier = Modifier
-            .graphicsLayer {
-               scaleX = viewerScale
-               scaleY = viewerScale
-               translationX = viewerOffset.x
-               translationY = viewerOffset.y
-            }
-            .transformable(transformableState),
-         verticalArrangement = pagesVerticalArrangement,
-         state = lazyListState
-      ) {
-         items(
-            count = pageCount,
-            key = { index -> "$documentIdentifier-$index" }
-         ) { index ->
-            val isVisible by remember(index) {
-               derivedStateOf { fullyVisibleIndices.contains(index) } }
-
-            if (isVisible) { currentPage = index }
-
-            val cacheKey = MemoryCache.Key("$documentIdentifier-$index")
-            val cachedBitmap : Bitmap? = imageLoader.memoryCache?.get(cacheKey)?.bitmap
-            var bitmap : Bitmap? by remember { mutableStateOf(cachedBitmap) }
-
-            if (bitmap == null) {
-
-               DisposableEffect(documentIdentifier, index) {
-                  var destinationBitmap : Bitmap? = null
-                  val job = imageLoadingScope.launch(Dispatchers.IO) {
-                     mutex.withLock {
-                        Log.d("PdfGenerator", "Loading PDF $documentIdentifier - page ${index + 1}/$pageCount")
-                        if (!coroutineContext.isActive) return@launch
-                        try {
-                           renderer?.let {
-                              it.openPage(index).use { page ->
-                                 destinationBitmap = Bitmap.createBitmap(page.width * bitmapScale, page.height * bitmapScale, Bitmap.Config.ARGB_8888)
-                                 page.render(destinationBitmap!!, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
-                              }
-                           }
-                        } catch (e: Exception) { return@launch }
-                     }
-                     bitmap = destinationBitmap
-                  }
-                  onDispose { job.cancel() }
+      if (pageCount > 2) {
+         LazyColumn(
+            userScrollEnabled = viewerScale == 1f,
+            modifier = Modifier
+               .graphicsLayer {
+                  scaleX = viewerScale
+                  scaleY = viewerScale
+                  translationX = viewerOffset.x
+                  translationY = viewerOffset.y
+               }
+               .transformable(transformableState),
+            verticalArrangement = pagesVerticalArrangement,
+            state = lazyListState
+         ) {
+            items(
+               count = pageCount,
+               key = { index -> "$documentIdentifier-$index" }
+            ) { index ->
+               val isVisible by remember(index) {
+                  derivedStateOf { fullyVisibleIndices.contains(index) }
                }
 
-               PagePlaceHolder(Color.White)
-            } else {
-               val density = LocalDensity.current.density.toInt()
-               val pageWidth = bitmap!!.getScaledWidth(density)
-               val pageHeight = bitmap!!.getScaledHeight(density)
-               Log.i("Dimensions", "$pageWidth : $pageHeight, aspect ratio = ${pageWidth/pageHeight}")
+               if (isVisible) {
+                  currentPage = index
+               }
 
-               val request = ImageRequest.Builder(context)
-                  .size(pageWidth, pageHeight)
-                  .memoryCacheKey(cacheKey)
-                  .data(bitmap)
-                  .build()
+               val cacheKey = MemoryCache.Key("$documentIdentifier-$index")
+               val cachedBitmap: Bitmap? = imageLoader.memoryCache?.get(cacheKey)?.bitmap
+               var bitmap: Bitmap? by remember { mutableStateOf(cachedBitmap) }
 
-               Box {
-                  Image(
+               if (bitmap == null) {
+
+                  DisposableEffect(documentIdentifier, index) {
+                     var destinationBitmap: Bitmap? = null
+                     val job = imageLoadingScope.launch(Dispatchers.IO) {
+                        mutex.withLock {
+                           Log.d(
+                              "PdfGenerator",
+                              "Loading PDF $documentIdentifier - page ${index + 1}/$pageCount"
+                           )
+                           if (!coroutineContext.isActive) return@launch
+                           try {
+                              renderer?.let {
+                                 it.openPage(index).use { page ->
+                                    destinationBitmap = Bitmap.createBitmap(
+                                       page.width * bitmapScale,
+                                       page.height * bitmapScale,
+                                       Bitmap.Config.ARGB_8888
+                                    )
+                                    page.render(
+                                       destinationBitmap!!,
+                                       null,
+                                       null,
+                                       PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY
+                                    )
+                                 }
+                              }
+                           } catch (e: Exception) {
+                              return@launch
+                           }
+                        }
+                        bitmap = destinationBitmap
+                     }
+                     onDispose { job.cancel() }
+                  }
+
+                  PagePlaceHolder(Color.White)
+               } else {
+                  val density = LocalDensity.current.density.toInt()
+                  val pageWidth = bitmap!!.getScaledWidth(density)
+                  val pageHeight = bitmap!!.getScaledHeight(density)
+                  Log.i(
+                     "Dimensions",
+                     "$pageWidth : $pageHeight, aspect ratio = ${pageWidth / pageHeight}"
+                  )
+
+                  val request = ImageRequest.Builder(context)
+                     .size(pageWidth, pageHeight)
+                     .memoryCacheKey(cacheKey)
+                     .data(bitmap)
+                     .build()
+
+                  Box {
+                     Image(
+                        modifier = Modifier
+                           .background(Color.White)
+                           .fillMaxWidth()
+                           .aspectRatio((pageWidth.toFloat() / pageHeight.toFloat())),
+                        contentScale = ContentScale.Fit,
+                        painter = rememberAsyncImagePainter(request),
+                        contentDescription = "Page ${index + 1} of $pageCount"
+                     )
+                  }
+               }
+
+               if (index != pageCount - 1) {
+                  Spacer(
                      modifier = Modifier
-                        .background(Color.White)
                         .fillMaxWidth()
-                        .aspectRatio((pageWidth.toFloat() / pageHeight.toFloat())),
-                     contentScale = ContentScale.Fit,
-                     painter = rememberAsyncImagePainter(request),
-                     contentDescription = "Page ${index + 1} of $pageCount"
+                        .height(15.dp)
                   )
                }
             }
-
-            if (index != pageCount - 1) { Spacer(modifier = Modifier
-               .fillMaxWidth()
-               .height(15.dp)) }
          }
+      } else {
+         CircularProgressIndicator(
+            modifier = Modifier
+               .fillMaxWidth(0.3f)
+               .align(Alignment.Center),
+            color = accentColor,
+            strokeCap = StrokeCap.Round
+         )
       }
 
       // Page count for some reason always starts with 2, so check is precise

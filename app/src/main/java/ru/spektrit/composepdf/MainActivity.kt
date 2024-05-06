@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
                modifier = Modifier.fillMaxSize(),
             ) {
                PdfViewer(
-                  pdfResId = R.raw.horizontal,
+                  pdfResId = R.raw.sample_multipage,
                   controlsAlignment = Alignment.CenterEnd,
                )
             }
