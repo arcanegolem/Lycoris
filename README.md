@@ -1,20 +1,33 @@
 # Lycoris [![](https://jitpack.io/v/arcanegolem/Lycoris.svg)](https://jitpack.io/#arcanegolem/Lycoris)
 ![Lycoris Header](https://github.com/arcanegolem/Lycoris/blob/master/images/header.jpg)
-Lycoris is an effortless PDF viewing library fully made with Jetpack Compose. Depends on Retrofit2 and Coil.
+Lycoris is an effortless PDF viewing library which provides ready-to-use PDF viewing composables fully made with and for Jetpack Compose. Depends on Retrofit2, Coil and Material Icons.
 
-## Contents
+# Contents
+* [DEMO](#DEMO)
 * [NEW](#NEW)
 * [Requirements](#Requirements)
 * [Usage](#Usage)
 * [Thanks to](#Thanks-to)
 * [Known Issues](#Known-issues)
 
-## NEW
-* Background color for enlarged page dialog
-* `Close` button hotfix
-* `PdfViewer` reworked (pinch to zoom instead of dialog for each page, fixed Issue #5)
+# DEMO
 
-## Requirements
+# NEW(!)
+## PdfViewer
+* Now has zoom controls instead of separate dialogs for each page
+* Added `iconTint` and `accentColor` for zoom controls (NOTE: `accentColor` will apply with 40% alpha)
+* Added `controlsAlignment` parameter for zoom controls positioning inside PdfViewer's box
+* Added `bitmapScale` for upscaling/downscaling pages for better readability/performance
+
+## HorizontalPagerPdfViewer
+* Now marked **Experimental**
+* Is unstable and unmaintained for now
+
+## VerticalPagerPdfViewer
+* Now marked **Experimental**
+* Is unstable and unmaintained for now
+
+# Requirements
 - Add `INTERNET` permission to your Android Manifest
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
@@ -43,139 +56,90 @@ dependencyResolutionManagement {
 - Add lycoris to your project dependencies
 ```gradle
 dependencies {
-  implementation 'com.github.arcanegolem:Lycoris:0.1.4'
+  implementation 'com.github.arcanegolem:Lycoris:1.0.0-alpha01'
 }
 ```
 
-## Usage
-Module contains overloaded `PdfViewer`, `HorizontalPagerPdfViewer` and `VerticalPagerPdfViewer` composable functions, usage examples below:
+# Usage
+Module contains overloaded `PdfViewer`, `HorizontalPagerPdfViewer` and `VerticalPagerPdfViewer` ready-to-use **composable** functions, usage examples below:
 
 **WARNING:** `PdfViewer` function utilizes LazyColumn composable.
 
-**Retrieving PDF document via raw resource:**
+## PDF from Raw Resource
 ```kotlin
-//============== Parameters ================
-fun PdfViewer(
-   modifier: Modifier = Modifier.fillMaxSize(),
+PdfViewer (
+   modifier: Modifier = Modifier,
    @RawRes pdfResId: Int,
-   documentDescription: String,
-   verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp)
-   dialogBackgroundColor: Color = Color.Transparent,
-   minPageDialogScale : Float,
-   maxPageDialogScale : Float
+   pagesVerticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
+   iconTint : Color = Color.Black,
+   accentColor : Color = Color.DarkGray,
+   controlsAlignment: Alignment = Alignment.BottomEnd,
+   bitmapScale : Int = 1
 )
 
-fun HorizontalPagerPdfViewer(
-   modifier: Modifier = Modifier.fillMaxWidth(),
-   @RawRes pdfResId: Int,
-   documentDescription : String
-)
-
-fun VerticalPagerPdfViewer(
-   modifier: Modifier = Modifier.fillMaxWidth(),
+VerticalPagerPdfViewer (
+   modifier: Modifier = Modifier,
    @RawRes pdfResId: Int,
    documentDescription : String
 )
 
-//================ Usage ===================
-PdfViewer(
-  pdfResId = R.raw.sample_pdf, 
-  documentDescription = "sample description",
-)
-
 HorizontalPagerPdfViewer(
-  pdfResId = R.raw.sample_pdf, 
-  documentDescription = "sample description",
-)
-
-VerticalPagerPdfViewer(
-  pdfResId = R.raw.sample_pdf, 
-  documentDescription = "sample description",
+   modifier: Modifier = Modifier,
+   @RawRes pdfResId: Int,
+   documentDescription : String
 )
 ```
 
-**Retriving PDF document via URI:**
+## PDF from Uri
 ```kotlin
-//============== Parameters ================
-fun PdfViewer(
-   modifier: Modifier = Modifier.fillMaxSize(),
+PdfViewer (
+   modifier: Modifier = Modifier,
    uri: Uri,
-   verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp)
-   dialogBackgroundColor: Color = Color.Transparent,
-   minPageDialogScale : Float,
-   maxPageDialogScale : Float
-)
-
-fun HorizontalPagerPdfViewer(
-   modifier: Modifier = Modifier.fillMaxWidth(),
-   uri: Uri,
-)
-
-fun VerticalPagerPdfViewer(
-   modifier: Modifier = Modifier.fillMaxWidth(),
-   uri: Uri,
-)
-
-//================ Usage ===================
-PdfViewer(
-  uri = // Your URI
-)
-
-HorizontalPagerPdfViewer(
-  uri = // Your URI
+   pagesVerticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
+   accentColor: Color = Color.DarkGray,
+   iconTint: Color = Color.Black,
+   controlsAlignment: Alignment = Alignment.BottomEnd,
+   bitmapScale : Int = 1
 )
 
 VerticalPagerPdfViewer(
-  uri = // Your URI
+   modifier: Modifier = Modifier,
+   uri: Uri
+)
+
+HorizontalPagerPdfViewer(
+   modifier: Modifier = Modifier,
+   uri: Uri
 )
 ```
 
-**Retriving PDF document via URL:**
+## PDF from URL
 ```kotlin
-//============== Parameters ================
-fun PdfViewer(
-   modifier: Modifier = Modifier.fillMaxSize(),
-   @Url url: String,
-   headers: HashMap<String, String>,
-   verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp)
-   dialogBackgroundColor: Color = Color.Transparent,
-   minPageDialogScale : Float,
-   maxPageDialogScale : Float
-)
-
-fun HorizontalPagerPdfViewer(
-   modifier: Modifier = Modifier.fillMaxWidth(),
-   @Url url: String,
-   headers: HashMap<String, String>,
-)
-
-fun VerticalPagerPdfViewer(
-   modifier: Modifier = Modifier.fillMaxWidth(),
-   @Url url: String,
-   headers: HashMap<String, String>,
-)
-
-//================ Usage ===================
 PdfViewer(
-  url = "https://sample.link.com/sample_pdf.pdf",
-  headers = hashMapOf( "headerKey" to "headerValue" )
-)
-
-HorizontalPagerPdfViewer(
-  url = "https://sample.link.com/sample_pdf.pdf",
-  headers = hashMapOf( "headerKey" to "headerValue" )
+   modifier: Modifier = Modifier,
+   @Url url: String,
+   headers: HashMap<String, String>? = null,
+   pagesVerticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
+   accentColor: Color = Color.DarkGray,
+   iconTint: Color = Color.Black,
+   controlsAlignment: Alignment = Alignment.BottomEnd,
+   bitmapScale : Int = 1
 )
 
 VerticalPagerPdfViewer(
-  url = "https://sample.link.com/sample_pdf.pdf",
-  headers = hashMapOf( "headerKey" to "headerValue" )
+   modifier: Modifier = Modifier,
+   @Url url: String
+   headers: HashMap<String, String>,
+)
+
+HorizontalPagerPdfViewer(
+   modifier: Modifier = Modifier,
+   @Url url: String,
+   headers: HashMap<String, String>
 )
 ```
 
-## Thanks to
+# Thanks to
 - [Mikołaj Pich](https://github.com/mklkj) for preparing Lycoris for it's initial release.
 
-## Known issues
-- Occasional slow load of PDF documents retrieved via URL in PdfViewer
-- Incorrect positioning of Viewer composables
-- Incorrect display of documents with custom page formats (horizontal pages for example)
+# Known issues
