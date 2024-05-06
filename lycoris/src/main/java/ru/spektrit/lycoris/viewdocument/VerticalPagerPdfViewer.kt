@@ -35,6 +35,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import org.jetbrains.annotations.ApiStatus.Experimental
 import retrofit2.http.Url
 import ru.spektrit.lycoris.network.provideDownloadInterface
 import ru.spektrit.lycoris.utils.PfdHelper
@@ -50,6 +51,7 @@ import kotlin.math.sqrt
  * @param [documentDescription] Similar to content description but cannot be null in this case
  */
 @OptIn(ExperimentalFoundationApi::class)
+@Experimental
 @Composable
 fun VerticalPagerPdfViewer(
    modifier: Modifier = Modifier,
@@ -140,6 +142,7 @@ fun VerticalPagerPdfViewer(
  * @param [uri] [Uri] from which document should be retrieved
  */
 @OptIn(ExperimentalFoundationApi::class)
+@Experimental
 @Composable
 fun VerticalPagerPdfViewer(
    modifier: Modifier = Modifier,
@@ -229,6 +232,7 @@ fun VerticalPagerPdfViewer(
  * @param [url] [Url] where PDF document is stored at
  */
 @OptIn(ExperimentalFoundationApi::class)
+@Experimental
 @Composable
 fun VerticalPagerPdfViewer(
    modifier: Modifier = Modifier,
