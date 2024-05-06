@@ -11,6 +11,21 @@ Lycoris is an effortless PDF viewing library which provides ready-to-use PDF vie
 * [Known Issues](#Known-issues)
 
 # DEMO
+![Lycoris demo](https://github.com/arcanegolem/Lycoris/blob/master/images/lycoris_demo.gif)
+
+**This can be achieved with following code (Sample in MainActivity):**
+```kotlin
+// ...
+Column (
+  modifier = Modifier.fillMaxSize()
+) {
+  PdfViewer (
+    pdfResId = R.raw.sample_multipage,
+    controlsAlignment = Alignment.CenterEnd,
+  )
+}
+// ...
+```
 
 # NEW(!)
 ## PdfViewer
