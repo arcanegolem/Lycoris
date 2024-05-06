@@ -62,7 +62,7 @@ internal fun PdfViewerDisplay(
    context : Context,
    renderer: PdfRenderer?,
    documentIdentifier : String,
-   verticalArrangement: Arrangement.Vertical,
+   pagesVerticalArrangement: Arrangement.Vertical,
    mutex : Mutex,
    accentColor : Color,
    iconTint : Color,
@@ -70,9 +70,9 @@ internal fun PdfViewerDisplay(
    bitmapScale : Int
 ) {
    val pdfViewerDisplayScope = rememberCoroutineScope()
+   val imageLoadingScope = rememberCoroutineScope()
 
    val imageLoader = context.imageLoader
-   val imageLoadingScope = rememberCoroutineScope()
 
    var viewerScale by remember { mutableFloatStateOf(1f) }
    var viewerOffset by remember { mutableStateOf(Offset.Zero) }
@@ -83,7 +83,7 @@ internal fun PdfViewerDisplay(
       val lazyListState = rememberLazyListState()
       var currentPage by remember { mutableIntStateOf(1) }
 
-      // TODO: Оптимизировать отслеживание текущей страницы
+      // TODO: Optimize current page tracking
       val fullyVisibleIndices: List<Int> by remember {
          derivedStateOf {
             val layoutInfo = lazyListState.layoutInfo
@@ -105,7 +105,7 @@ internal fun PdfViewerDisplay(
          }
       }
 
-
+      // Page count for some reason always starts with 2, so check is precise
       if (pageCount > 2) {
          Column(
             modifier = Modifier
@@ -167,7 +167,7 @@ internal fun PdfViewerDisplay(
                translationY = viewerOffset.y
             }
             .transformable(transformableState),
-         verticalArrangement = verticalArrangement,
+         verticalArrangement = pagesVerticalArrangement,
          state = lazyListState
       ) {
          items(
@@ -237,6 +237,7 @@ internal fun PdfViewerDisplay(
          }
       }
 
+      // Page count for some reason always starts with 2, so check is precise
       if (pageCount > 2) {
          Text(
             modifier = Modifier

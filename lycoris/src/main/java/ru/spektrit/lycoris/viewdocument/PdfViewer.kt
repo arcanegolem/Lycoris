@@ -29,13 +29,17 @@ import ru.spektrit.lycoris.utils.PfdHelper
  *
  * @param [modifier] [Modifier]
  * @param [pdfResId] Raw resource id of a PDF document
- * @param [verticalArrangement] Page arrangement
+ * @param [pagesVerticalArrangement] Page arrangement
+ * @param [iconTint] Tint for controls icons
+ * @param [accentColor] Accent color for zoom controls background; NOTE: Color will be applied with 40% opacity
+ * @param [controlsAlignment] Alignment of zoom controls inside PdfViewer's box
+ * @param [bitmapScale] Pages bitmap scale, can be used for upscaling or downscaling quality of document's pages for optimizing visibility or/and performance
  */
 @Composable
 fun PdfViewer(
    modifier: Modifier = Modifier,
    @RawRes pdfResId: Int,
-   verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
+   pagesVerticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
    iconTint : Color = Color.Black,
    accentColor : Color = Color.DarkGray,
    controlsAlignment: Alignment = Alignment.BottomEnd,
@@ -69,7 +73,7 @@ fun PdfViewer(
       context = context,
       renderer = renderer,
       documentIdentifier = documentIdentifier,
-      verticalArrangement = verticalArrangement,
+      pagesVerticalArrangement = pagesVerticalArrangement,
       mutex = mutex,
       controlsAlignment = controlsAlignment,
       iconTint = iconTint,
@@ -83,13 +87,17 @@ fun PdfViewer(
  *
  * @param [modifier] [Modifier] interface for the whole composable, by default fills max size available
  * @param [uri] [Uri] from which document should be retrieved
- * @param [verticalArrangement] Page arrangement
+ * @param [pagesVerticalArrangement] Page arrangement
+ * @param [iconTint] Tint for controls icons
+ * @param [accentColor] Accent color for zoom controls background; NOTE: Color will be applied with 40% opacity
+ * @param [controlsAlignment] Alignment of zoom controls inside PdfViewer's box
+ * @param [bitmapScale] Pages bitmap scale, can be used for upscaling or downscaling quality of document's pages for optimizing visibility or/and performance
  */
 @Composable
 fun PdfViewer(
    modifier: Modifier = Modifier,
    uri: Uri,
-   verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
+   pagesVerticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
    accentColor: Color = Color.DarkGray,
    iconTint: Color = Color.Black,
    controlsAlignment: Alignment = Alignment.BottomEnd,
@@ -119,7 +127,7 @@ fun PdfViewer(
       context = context,
       renderer = renderer,
       documentIdentifier = uri.toString(),
-      verticalArrangement = verticalArrangement,
+      pagesVerticalArrangement = pagesVerticalArrangement,
       mutex = mutex,
       controlsAlignment = controlsAlignment,
       iconTint = iconTint,
@@ -134,14 +142,18 @@ fun PdfViewer(
  * @param [modifier] [Modifier] interface for the whole composable, by default fills max size available
  * @param [url] [Url] where PDF document is stored at
  * @param [headers] optional http headers
- * @param [verticalArrangement] Page arrangement
+ * @param [pagesVerticalArrangement] Page arrangement
+ * @param [iconTint] Tint for controls icons
+ * @param [accentColor] Accent color for zoom controls background; NOTE: Color will be applied with 40% opacity
+ * @param [controlsAlignment] Alignment of zoom controls inside PdfViewer's box
+ * @param [bitmapScale] Pages bitmap scale, can be used for upscaling or downscaling quality of document's pages for optimizing visibility or/and performance
  */
 @Composable
 fun PdfViewer(
    modifier: Modifier = Modifier,
    @Url url: String,
    headers: HashMap<String, String>? = null,
-   verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
+   pagesVerticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(8.dp),
    accentColor: Color = Color.DarkGray,
    iconTint: Color = Color.Black,
    controlsAlignment: Alignment = Alignment.BottomEnd,
@@ -171,7 +183,7 @@ fun PdfViewer(
       context = context,
       renderer = renderer,
       documentIdentifier = url,
-      verticalArrangement = verticalArrangement,
+      pagesVerticalArrangement = pagesVerticalArrangement,
       mutex = mutex,
       controlsAlignment = controlsAlignment,
       iconTint = iconTint,
