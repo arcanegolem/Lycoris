@@ -33,6 +33,7 @@ Column (
 * Added `iconTint` and `accentColor` for zoom controls (NOTE: `accentColor` will apply with 40% alpha)
 * Added `controlsAlignment` parameter for zoom controls positioning inside PdfViewer's box
 * Added `bitmapScale` for upscaling/downscaling pages for better readability/performance
+* Added support for documents with unordinary aspect ratios
 
 ## HorizontalPagerPdfViewer
 * Now marked **Experimental**
