@@ -68,7 +68,4 @@ dependencies {
    debugImplementation("androidx.compose.ui:ui-test-manifest")
 
    implementation(project(":lycoris"))
-
-   // Material Icons
-   implementation("androidx.compose.material:material-icons-extended")
 }
