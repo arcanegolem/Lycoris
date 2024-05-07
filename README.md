@@ -1,6 +1,6 @@
 # Lycoris [![](https://jitpack.io/v/arcanegolem/Lycoris.svg)](https://jitpack.io/#arcanegolem/Lycoris)
 ![Lycoris Header](https://github.com/arcanegolem/Lycoris/blob/master/images/header.jpg)
-Lycoris is an effortless PDF viewing library which provides ready-to-use PDF viewing composables fully made with and for Jetpack Compose. Depends on Retrofit2, Coil and Material Icons. Supports PDF from Raw resources, URL and URL.
+Lycoris is an effortless PDF viewing library which provides ready-to-use PDF viewing composables fully made with and for Jetpack Compose. Depends on Retrofit2, Coil and Material Icons. Supports PDF from Raw resources, Uri and URL.
 
 # Contents
 * [DEMO](#DEMO)
