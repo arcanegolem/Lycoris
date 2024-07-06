@@ -8,7 +8,6 @@ Lycoris is an effortless PDF viewing library which provides ready-to-use PDF vie
 * [Requirements](#Requirements)
 * [Usage](#Usage)
 * [Thanks to](#Thanks-to)
-* [Known Issues](#Known-issues)
 
 # DEMO
 <img src="https://github.com/arcanegolem/Lycoris/blob/master/images/lycoris_demo.gif" width="350" />
@@ -157,5 +156,3 @@ HorizontalPagerPdfViewer(
 
 # Thanks to
 - [Mikołaj Pich](https://github.com/mklkj) for preparing Lycoris for it's initial release.
-
-# Known issues
