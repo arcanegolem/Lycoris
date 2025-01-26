@@ -1,6 +1,6 @@
 # Lycoris [![](https://jitpack.io/v/arcanegolem/Lycoris.svg)](https://jitpack.io/#arcanegolem/Lycoris)
 ![Lycoris Header](https://github.com/arcanegolem/Lycoris/blob/master/images/header.jpg)
-Lycoris is an effortless PDF viewing library which provides ready-to-use PDF viewing composables fully made with and for Jetpack Compose. Depends on Retrofit2, Coil and Material Icons.
+Lycoris is an effortless PDF viewing library which provides ready-to-use PDF viewing composables fully made with and for Jetpack Compose. Depends on Retrofit2, Coil and Material Icons. Supports PDF from Raw resources, Uri and URL.
 
 # Contents
 * [DEMO](#DEMO)
@@ -8,9 +8,23 @@ Lycoris is an effortless PDF viewing library which provides ready-to-use PDF vie
 * [Requirements](#Requirements)
 * [Usage](#Usage)
 * [Thanks to](#Thanks-to)
-* [Known Issues](#Known-issues)
 
 # DEMO
+<img src="https://github.com/arcanegolem/Lycoris/blob/master/images/lycoris_demo.gif" width="350" />
+
+**This can be achieved with following code (Sample in MainActivity):**
+```kotlin
+// ...
+Column (
+  modifier = Modifier.fillMaxSize()
+) {
+  PdfViewer (
+    pdfResId = R.raw.sample_multipage,
+    controlsAlignment = Alignment.CenterEnd,
+  )
+}
+// ...
+```
 
 # NEW(!)
 ## PdfViewer
@@ -18,6 +32,7 @@ Lycoris is an effortless PDF viewing library which provides ready-to-use PDF vie
 * Added `iconTint` and `accentColor` for zoom controls (NOTE: `accentColor` will apply with 40% alpha)
 * Added `controlsAlignment` parameter for zoom controls positioning inside PdfViewer's box
 * Added `bitmapScale` for upscaling/downscaling pages for better readability/performance
+* Added support for documents with unordinary aspect ratios
 
 ## HorizontalPagerPdfViewer
 * Now marked **Experimental**
@@ -141,5 +156,3 @@ HorizontalPagerPdfViewer(
 
 # Thanks to
 - [Mikołaj Pich](https://github.com/mklkj) for preparing Lycoris for it's initial release.
-
-# Known issues
